@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>test 045 เกมฝึกโจทย์ฟังก์ชันประกอบ(composite Function)</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+
+<h1>test 045 อ.ช่อ โจทย์ฟังก์ชันประกอบ</h1>
+
+<div id="question"></div>
+<input type="text" id="answer" placeholder="กรอกคำตอบของคุณ">
+<button onclick="generateRandomQuestion()">สร้างโจทย์แบบสุ่ม</button>
+<button onclick="checkAnswer()">ตรวจสอบคำตอบ</button>
+<p id="result"></p>
+<button onclick="closeResult()">ปิด</button>
+
+<script>
+var functionsObj = null; // เก็บข้อมูลของฟังก์ชันที่สร้างขึ้น
+
+function generateFunctions() {
+    // สร้างค่าค่าคงที่สำหรับฟังก์ชัน
+    var a1 = Math.floor(Math.random() * 9) + 1; // ค่าคงที่สำหรับ f(x)
+    var b1 = Math.floor(Math.random() * 9) + 1; // ค่าคงที่สำหรับ g(x)
+    var a2 = Math.floor(Math.random() * 9) + 1; // ค่าคงที่สำหรับ f(x)
+    var b2 = Math.floor(Math.random() * 9) + 1; // ค่าคงที่สำหรับ g(x)
+
+    // สร้างฟังก์ชัน
+    var f_x = 'f(x) = ' + a1 + 'x + ' + a2;
+    var g_x = 'g(x) = ' + b1 + 'x + ' + b2;
+
+    return {
+        f_x: f_x,
+        g_x: g_x,
+        a1: a1,
+        b1: b1,
+        a2: a2,
+        b2: b2
+    };
+}
+
+function displayFunctions() {
+    functionsObj = generateFunctions();
+    document.getElementById('question').innerText = 'ฟังก์ชันที่กำหนด:\n' + 'f(x)' + ' = ' + functionsObj.a1 +'x + '+ functionsObj.a2 + '\n' + 'g(x)' + ' = ' + functionsObj.b1 +'x + '+ functionsObj.b2 + '\n';
+    document.getElementById('answer').value = '';
+    document.getElementById('result').innerText = '';
+    return functionsObj;
+}
+
+function compositeFunction(a1, b1, b2, a2) {
+    // คำนวณฟังก์ชันรวม f(g(x))
+    var result = (a1 * b2) + a2; // คำนวณค่า (a1*b2)+a2
+    var compositeFunction = 'f(g(x)) = f(' + b1 + 'x + ' + b2 + ') = ' + a1 + '(' + b1 + 'x + ' + b2 + ') + ' + a2 + ' = ' + (a1 * b1) + 'x + ' + result;
+    return compositeFunction;
+}
+
+
+function checkAnswer() {
+    var userAnswer = document.getElementById('answer').value;
+    if (functionsObj === null) {
+        alert('กรุณาสร้างโจทย์ก่อนที่จะตรวจสอบคำตอบ');
+        return;
+    }
+    var { a1, b1, b2, a2 } = functionsObj;
+    var correctAnswer = compositeFunction(a1, b1, b2, a2);
+    document.getElementById('result').innerText = 'คำตอบของคุณคือ:' + userAnswer + '\n'+'คำตอบที่ถูกต้องคือ:' + correctAnswer;
+}
+
+function generateRandomQuestion() {
+    displayFunctions();
+}
+
+function closeResult() {
+    document.getElementById('result').innerText = '';
+}
+</script>
+
+</body>
+</html>
